@@ -1,0 +1,86 @@
+# =========================
+# Java / Maven
+# =========================
+target/
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+# =========================
+# IDE - IntelliJ IDEA
+# =========================
+.idea/
+*.iws
+*.iml
+*.ipr
+
+# =========================
+# IDE - Eclipse
+# =========================
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+# =========================
+# IDE - VSCode
+# =========================
+.vscode/
+
+# =========================
+# OS Files
+# =========================
+.DS_Store
+Thumbs.db
+
+# =========================
+# Logs
+# =========================
+*.log
+logs/
+
+# =========================
+# Build
+# =========================
+build/
+out/
+*.jar
+*.war
+*.ear
+
+# =========================
+# Spring Boot
+# =========================
+application-local.yml
+application-local.properties
+
+# =========================
+# Environment / Secrets
+# =========================
+.env
+.env.local
+.env.*.local
+*.pem
+*.key
+
+# =========================
+# Test Coverage
+# =========================
+coverage/
+*.exec
+
+# =========================
+# Temporary Files
+# =========================
+*.tmp
+*.bak
+*.swp
+*~
+
+# =========================
+# Documentation (locale)
+# =========================
+docs/

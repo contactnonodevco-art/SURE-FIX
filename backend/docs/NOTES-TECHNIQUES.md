@@ -190,4 +190,79 @@ private UserRole role;  // Stocké comme "TECHNICIAN" en base
 
 ---
 
+## 9. Pourquoi 3 DTOs distincts ? (DTO, CreateDTO, UpdateDTO)
+
+### ShopDTO (Response) - Pour les réponses GET
+
+| Caractéristique | Explication |
+|-----------------|-------------|
+| **Contient** | Toutes les infos à afficher (id, dates, données calculées) |
+| **Usage** | Retourné par l'API après GET, POST, PUT |
+| **Exemple** | `technicianCount` est calculé, pas stocké en base |
+
+```java
+// Le client reçoit TOUT ce dont il a besoin pour afficher
+ShopDTO {
+    id, name, address, technicianCount, createdAt...
+}
+```
+
+### ShopCreateDTO (Create) - Pour les requêtes POST
+
+| Caractéristique | Explication |
+|-----------------|-------------|
+| **Contient** | Seulement les champs nécessaires à la création |
+| **Ne contient PAS** | `id` (généré), `createdAt` (automatique), `active` (défaut: true) |
+| **Validations** | `@NotBlank` sur les champs obligatoires |
+
+```java
+// Le client envoie UNIQUEMENT ce qui est nécessaire
+ShopCreateDTO {
+    name (obligatoire), address, city...
+    // PAS d'id, PAS de createdAt
+}
+```
+
+### ShopUpdateDTO (Update) - Pour les requêtes PUT/PATCH
+
+| Caractéristique | Explication |
+|-----------------|-------------|
+| **Contient** | Champs modifiables uniquement |
+| **Tous optionnels** | On ne met à jour que ce qui est envoyé |
+| **Ne contient PAS** | `id` (dans l'URL), `createdAt` (non modifiable) |
+
+```java
+// Le client envoie SEULEMENT ce qu'il veut modifier
+ShopUpdateDTO {
+    name, address, active...  // Tous optionnels
+    // PAS d'id, PAS de createdAt
+}
+```
+
+### Exemple concret d'utilisation
+
+```java
+// POST /api/shops - Créer un atelier
+ShopCreateDTO input = { name: "Mon Atelier", city: "Paris" }
+→ Retourne ShopDTO { id: 1, name: "Mon Atelier", city: "Paris", active: true, createdAt: "2024-01-15", technicianCount: 0 }
+
+// GET /api/shops/1 - Récupérer un atelier
+→ Retourne ShopDTO { id: 1, name: "Mon Atelier", ..., technicianCount: 5 }
+
+// PUT /api/shops/1 - Modifier un atelier
+ShopUpdateDTO input = { active: false }  // Seulement ce champ
+→ Retourne ShopDTO { id: 1, name: "Mon Atelier", active: false, ... }
+```
+
+### Avantages de cette séparation
+
+| Avantage | Explication |
+|----------|-------------|
+| **Sécurité** | Impossible de modifier `id` ou `createdAt` par accident |
+| **Clarté** | Le client sait exactement quoi envoyer |
+| **Validation** | Règles différentes selon l'opération |
+| **Flexibilité** | Update partiel sans envoyer tous les champs |
+
+---
+
 *Document généré pendant le développement du projet Sure Fix*
